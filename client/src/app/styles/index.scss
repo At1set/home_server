@@ -2,18 +2,18 @@
 @use './clearstyle';
 
 :root {
-  --bg-primary: #1c1c1c;
-  --text-light: #fff;
-  --text-dark: #000;
+	--bg-primary: #1c1c1c;
+	--text-light: #fff;
+	--text-dark: #000;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  font-size: 25px;
-  color: var(--text-light);
-  background-color: var(--bg-primary);
+	font-family: 'Inter', sans-serif;
+	font-size: 25px;
+	color: var(--text-light);
+	background-color: var(--bg-primary);
 
-  &:global(._lock) {
-    overflow: hidden;
-  }
+	&:global(._lock) {
+		overflow: hidden;
+	}
 }
