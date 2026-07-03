@@ -14,6 +14,8 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@prisma/adapter-mariadb": "^7.8.0",
+		"@prisma/client": "^7.8.0",
 		"bcrypt": "^6.0.0",
 		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.6",
@@ -28,6 +30,7 @@
 		"@types/jsonwebtoken": "^9.0.10",
 		"@types/node": "^26.1.0",
 		"prettier": "^3.9.4",
+		"prisma": "^7.8.0",
 		"tsx": "^4.22.5",
 		"typescript": "^6.0.3"
 	}

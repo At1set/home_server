@@ -1,18 +1,15 @@
 {
 	"compilerOptions": {
-		"rootDir": "./src",
-		"outDir": "./dist",
-
-		"target": "ES2022",
-		"module": "nodenext",
-		"moduleResolution": "nodenext",
+		"target": "ES2023",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true,
-		"noFallthroughCasesInSwitch": true
-	},
-	"include": ["src/**/*"]
+		"noFallthroughCasesInSwitch": true,
+		"outDir": "dist"
+	}
 }

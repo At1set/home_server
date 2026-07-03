@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { prisma } from './lib/prisma';
 
 process.loadEnvFile();
 
@@ -17,6 +18,7 @@ app.use(
 	}),
 );
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+	await prisma.users.deleteMany({});
 	console.log(`Сервер успешно запущен на http://localhost:${PORT}`);
 });
