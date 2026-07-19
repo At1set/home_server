@@ -1,0 +1,27 @@
+.root {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  background-color: rgba(0, 0, 0, var(--overlay-opacity, 0.4));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity ease .2s;
+  padding: 20px;
+
+  &._active {
+    pointer-events: all;
+    opacity: 1;
+
+    .root__body {
+      transform: translateY(0px);
+    }
+  }
+
+  &__body {
+    transition: transform ease .2s;
+    transform: translateY(-12px);
+  }
+}

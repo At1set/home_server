@@ -1,0 +1,126 @@
+.confirmModal {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--text-ligth, #333);
+  text-align: center;
+
+  .title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &_danger {
+      color: #e53e3e;
+    }
+
+    &_warning {
+      color: #dd6b20;
+    }
+
+    &_info {
+      color: #3182ce;
+    }
+  }
+
+  .message {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #87adea;
+    max-width: 600px;
+
+    strong {
+      color: #feffff;
+      font-weight: 600;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+    width: 100%;
+
+    button {
+      flex: 1;
+      max-width: 140px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all ease 0.15s;
+      outline: none;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    // Кнопка "Отмена" всегда одинаковая
+    .button_cancel {
+      background-color: #edf2f7;
+      color: #4a5568;
+      border-color: #cbd5e0;
+
+      &:hover:not(:disabled) {
+        background-color: #e2e8f0;
+        color: #2d3748;
+      }
+
+      &:active:not(:disabled) {
+        background-color: #cbd5e0;
+      }
+    }
+
+    // Кнопка действия меняет цвет под тип алерта
+    .button_action {
+      color: #ffffff;
+    }
+
+    .button_danger {
+      background-color: #e53e3e;
+
+      &:hover:not(:disabled) {
+        background-color: #c53030;
+      }
+
+      &:active:not(:disabled) {
+        background-color: #9b2c2c;
+      }
+    }
+
+    .button_warning {
+      background-color: #dd6b20;
+
+      &:hover:not(:disabled) {
+        background-color: #c05621;
+      }
+
+      &:active:not(:disabled) {
+        background-color: #9c4221;
+      }
+    }
+
+    .button_info {
+      background-color: #3182ce;
+
+      &:hover:not(:disabled) {
+        background-color: #2b6cb0;
+      }
+
+      &:active:not(:disabled) {
+        background-color: #2c5282;
+      }
+    }
+  }
+}

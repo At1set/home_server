@@ -1,0 +1,17 @@
+.extraContainer {
+  text-align: center;
+}
+
+.noAcc {
+  font-size: 16px;
+  opacity: .6;
+
+  &_link {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    color: inherit;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

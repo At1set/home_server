@@ -1,6 +1,8 @@
+import type { UUID } from 'crypto';
 import { prisma } from '../../../lib/prisma';
 
-export interface CreateSessionArguments {
+interface CreateSessionArguments {
+	id: UUID;
 	userId: string;
 	refreshToken: string;
 	deviceId: string;
@@ -9,29 +11,40 @@ export interface CreateSessionArguments {
 	expiresAt: Date;
 }
 
+interface UpdateSessionArguments {
+	id: UUID;
+	refreshToken: string;
+	deviceName?: string;
+	ipAddress: string;
+	expiresAt: Date;
+}
+
 export const SessionService = {
-	async save(args: CreateSessionArguments) {
-		const { userId, refreshToken, deviceId, deviceName = 'undefined', ipAddress, expiresAt } = args;
+	async create(args: CreateSessionArguments) {
+		const {
+			id,
+			userId,
+			refreshToken,
+			deviceId,
+			deviceName = 'undefined',
+			ipAddress,
+			expiresAt,
+		} = args;
 
 		await SessionService._handleSessionLimit(userId, deviceId);
 
-		return await prisma.sessions.upsert({
+		// Eсли сессия для этого девайса была — удаляем её, чтобы не плодить дубли
+		await prisma.sessions.deleteMany({
 			where: {
-				// Prisma сама потребует здесь именно уникальные поля/связки
-				user_id_device_id: {
-					user_id: userId,
-					device_id: deviceId,
-				},
+				user_id: userId,
+				device_id: deviceId,
 			},
-			update: {
-				// Что менять, если запись НАЙДЕНА
-				refresh_token: refreshToken,
-				device_name: deviceName,
-				ip_address: ipAddress,
-				expires_at: expiresAt,
-			},
-			create: {
-				// Что вставить, если записи НЕТ
+		});
+
+		// Cоздаем ЧИСТУЮ запись с новым UUID
+		return await prisma.sessions.create({
+			data: {
+				id,
 				user_id: userId,
 				device_id: deviceId,
 				refresh_token: refreshToken,
@@ -42,7 +55,27 @@ export const SessionService = {
 		});
 	},
 
-	async find({ userId, deviceId }: { userId: string; deviceId: string }) {
+	async update({ id, refreshToken, deviceName, ipAddress, expiresAt }: UpdateSessionArguments) {
+		return await prisma.sessions.update({
+			where: { id },
+			data: {
+				refresh_token: refreshToken,
+				device_name: deviceName,
+				ip_address: ipAddress,
+				expires_at: expiresAt,
+			},
+		});
+	},
+
+	async findById(id: string) {
+		return await prisma.sessions.findUnique({
+			where: {
+				id,
+			},
+		});
+	},
+
+	async findByUserId_DeviceId({ userId, deviceId }: { userId: string; deviceId: string }) {
 		return await prisma.sessions.findUnique({
 			where: {
 				user_id_device_id: {
@@ -53,10 +86,18 @@ export const SessionService = {
 		});
 	},
 
-	async remove(refreshToken: string) {
+	async removeByRefreshToken(refreshToken: string) {
 		return await prisma.sessions.delete({
 			where: {
 				refresh_token: refreshToken,
+			},
+		});
+	},
+
+	async removeById(sessionId: string) {
+		return await prisma.sessions.delete({
+			where: {
+				id: sessionId,
 			},
 		});
 	},

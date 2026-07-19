@@ -1,0 +1,334 @@
+.root {
+  &__container {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+    color: var(--text-dark);
+  }
+
+  &__field {
+    padding: 15px 0;
+
+    &:first-of-type {
+      margin-top: 20px;
+    }
+  }
+
+  &__top {
+    .divider {
+      margin: 15px 0;
+    }
+  }
+}
+
+.field {}
+
+// Контейнер списка сессий
+.sessionsList {
+  overflow-x: auto;
+  margin: 20px 0;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    min-width: max-content;
+
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(113, 215, 255, 0.4);
+      border-radius: 4px;
+    }
+  }
+}
+
+// Один ряд сессии
+.sessionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background-color: #f7fafc;
+  border-left: 4px solid #71d7ff;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  width: 100%;
+
+  &:hover {
+    background-color: #edf2f7;
+  }
+
+  &_current {
+    min-width: 470px;
+    background-color: #f0fdf4; // Мягкий зеленый фон (цвета успешного/текущего статуса)
+    border-left-color: #38a169; // Насыщенный зеленый бордер вместо голубого
+
+    &:hover {
+      background-color: #dcfce7; // Чуть темнее при наведении
+
+      .badge {
+        background-color: #ffffff;
+      }
+    }
+
+    .badge {
+      display: inline-block;
+      text-align: center;
+      margin: 0px 8px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #166534;
+      background-color: #dcfce7;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    // Переопределяем поведение кнопки удаления для СВОЕЙ сессии (ведь это Logout)
+    .sessionItem__deleteBtn {
+      color: #ff0000;
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    padding-right: 15px;
+    max-width: 360px;
+  }
+
+  &__device {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+
+    span {
+      font-weight: 400;
+      color: #718096;
+    }
+  }
+
+  &__details {
+    font-size: 13px;
+    color: #718096;
+
+    span {
+      color: #4a5568;
+    }
+  }
+
+  // Кнопка мусорки
+  &__deleteBtn {
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background-color: rgba(244, 38, 38, 0.1);
+      color: #e53e3e;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.emptySessions {
+  text-align: center;
+  color: #a0aec0;
+  padding: 20px 0;
+  font-size: 16px;
+}
+
+// Модалка подтверждения в рамках файла ManageSessions.module.scss
+.confirmModal {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #2d3748;
+  text-align: center;
+  max-width: 400px;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #e53e3e;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #87adea;
+
+    strong {
+      color: #feffff;
+      font-weight: 600;
+    }
+  }
+
+  &__details {
+    background-color: #f7fafc;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    font-size: 13px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: black;
+
+    strong {
+      color: #4a5568;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+
+    button {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .button_cancel {
+      background-color: #edf2f7;
+      color: #4a5568;
+      border-color: #cbd5e0;
+
+      &:hover:not(:disabled) {
+        background-color: #e2e8f0;
+      }
+    }
+
+    .button_danger {
+      background-color: #e53e3e;
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        background-color: #c53030;
+      }
+    }
+  }
+}
+
+// Стандартные утилиты формы
+.divider {
+  width: 100%;
+  border-top: 1px solid #3c3c3c20;
+}
+
+.responseError {
+  margin-top: 8px;
+  color: tomato;
+  font-size: 15px;
+  text-align: center;
+}
+
+.responseOk {
+  margin-top: 8px;
+  color: limegreen;
+  font-size: 15px;
+  text-align: center;
+}
+
+.buttonContainer {
+  max-width: 380px;
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .button {
+    &:first-child {
+      margin-right: 10px;
+    }
+
+    display: block;
+    padding: 6px 20px;
+    font-size: 16px;
+    text-align: center;
+    border: 2px solid #71d7ff;
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(113, 215, 255, 0.1);
+    }
+
+    &_deleteAllSessions {
+      border: 2px solid rgba(244, 38, 38, 0.7);
+      color: #e53e3e;
+
+      &:hover:not(:disabled) {
+        background-color: rgba(229, 62, 98, 0.1);
+      }
+
+      &:disabled {
+        opacity: .5;
+        border-color: #cbd5e0;
+        color: #a0aec0;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  @media (max-width: 368.99px) {
+    flex-direction: column;
+    gap: 10px;
+
+    .button {
+      width: 100%;
+
+      &:first-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

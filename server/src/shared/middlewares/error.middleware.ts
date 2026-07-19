@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from 'express';
+import { type ErrorRequestHandler } from 'express';
 import { ApiError } from '../Errors/ApiErrors';
 
 export function errorMiddleware(): ErrorRequestHandler {

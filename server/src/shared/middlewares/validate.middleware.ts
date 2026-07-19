@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { ZodObject, ZodError, ZodType } from 'zod';
 import { ApiError } from '../Errors/ApiErrors.js';
 
@@ -20,9 +20,21 @@ export const validate =
 			});
 
 			// Перезаписываем ВСЕ части запроса очищенными и приведенными к типам данными
-			if (parsed.body) req.body = parsed.body;
-			if (parsed.query) req.query = parsed.query as any;
-			if (parsed.params) req.params = parsed.params as any;
+			if (parsed.body)
+				req.body = {
+					...req.body,
+					...parsed.body,
+				};
+			if (parsed.query)
+				req.validatedQuery = {
+					...req.validatedQuery,
+					...parsed.query,
+				};
+			if (parsed.params)
+				req.validatedParams = {
+					...req.validatedParams,
+					...parsed.params,
+				};
 
 			return next();
 		} catch (error) {

@@ -1,14 +1,16 @@
 import jwt from 'jsonwebtoken';
-import { UserDTO } from '../dtos/user.dto.js';
+import { type UserDTO } from '../../user/dtos/user.dto.js';
+import type { UUID } from 'crypto';
 
-type Payload = {
+export type Payload = {
 	deviceId: string;
+	sessionId: UUID;
 } & UserDTO;
 
 export const TokenService = {
 	generateTokens(payload: Payload) {
 		const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, {
-			expiresIn: '15m',
+			expiresIn: '5m',
 		});
 
 		const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, {

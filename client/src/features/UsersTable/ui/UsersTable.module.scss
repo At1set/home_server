@@ -1,0 +1,269 @@
+:root {
+  --border-color: #3c3c3c;
+  --bg-card: #1f1f1f;
+  --bg-hover: #353535;
+  --text-muted: #6786b0;
+  --text-main: #91b2df;
+  --bg-active: #1f1f1f;
+  --bg-details: #252525;
+  --bg-chip: #2f3c40;
+}
+
+.root {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background-color: var(--bg-card, #ffffff);
+}
+
+.table {
+  width: 100%;
+  height: 1px;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  table-layout: fixed;
+  min-width: 600px;
+}
+
+.th {
+  padding: 12px 16px;
+  background-color: var(--bg-hover, #f8fafc);
+  color: var(--text-muted, #64748b);
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-color, #e2e8f0);
+}
+
+.tr {
+  height: 100%;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  cursor: pointer;
+
+  @media (any-hover: hover) {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--bg-hover, #f8fafc);
+    }
+  }
+}
+
+.activeRow {
+  background-color: var(--bg-active, #f1f5f9);
+
+  &:hover {
+    background-color: var(--bg-active, #f1f5f9);
+  }
+}
+
+.td {
+  padding: 14px 16px;
+  color: var(--text-main, #1e293b);
+  vertical-align: middle;
+
+  &_editUser {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.id {
+  font-family: monospace;
+  color: #888;
+  font-size: 12px;
+}
+
+/* Стили ролей */
+.role {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  min-width: 52px;
+
+  &.admin {
+    background-color: var(--bg-chip, #dbeafe);
+    color: #ef4444;
+  }
+
+  &.user {
+    background-color: var(--bg-chip, #dbeafe);
+    color: #3b82f6;
+  }
+
+  &.owner {
+    background-color: var(--bg-chip, #dbeafe);
+    color: gold;
+  }
+}
+
+/* Бадж сессий */
+.sessionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border-color, #cbd5e1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-main, #334155);
+  transition: all 0.2s;
+
+  @media (any-hover: hover) {
+    &:hover {
+      border-color: #94a3b8;
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+  }
+}
+
+.arrow {
+  font-size: 8px;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.arrowUp {
+  transform: rotate(180deg);
+}
+
+/* Раскрывающаяся строка */
+.detailsRow {
+  max-width: 100%;
+  background-color: var(--bg-details, #fafafa);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.detailsTd {
+  padding: 0;
+  /* Чтобы контейнер внутри управлял отступами плавно */
+}
+
+.sessionsContainer {
+  padding: 16px 24px;
+  animation: slideDown 0.2s ease-out;
+}
+
+.sessionsTitle {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: var(--text-muted, #475569);
+  font-weight: 600;
+}
+
+.noSessions {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Сетка сессий */
+.sessionsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.sessionHeader,
+.sessionItem {
+  display: grid;
+  max-width: 100%;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr;
+  padding: 8px 12px;
+  align-items: center;
+}
+
+.sessionHeader {
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  padding-bottom: 4px;
+}
+
+.sessionItem {
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #f1f5f9);
+  border-radius: 6px;
+  color: var(--text-main, #334155);
+}
+
+.deviceName {
+  font-weight: 500;
+}
+
+.ipAddress {
+  font-family: monospace;
+  color: var(--text-main, #334155);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Выравнивание колонки действий */
+.actionsTh {
+  width: 64px;
+  /* Задаем фиксированную небольшую ширину для колонки с кнопкой */
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+/* Кнопка редактирования */
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: #6786b0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    // Наведение подсвечивает кнопку мягким брендовым цветом
+    background-color: #242424;
+    color: #4082de;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.editIcon {
+  width: 18px;
+  height: 18px;
+}

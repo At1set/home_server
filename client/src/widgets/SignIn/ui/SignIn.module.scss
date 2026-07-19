@@ -1,0 +1,18 @@
+.root {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	height: 100%;
+
+	&__container {
+		background-color: #252525;
+		padding: 28px;
+		width: 100%;
+		max-width: 350px;
+	}
+
+	&__form {
+		width: 100%;
+	}
+}

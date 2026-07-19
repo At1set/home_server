@@ -1,8 +1,7 @@
-// src/modules/auth/controllers/AuthController.ts
-import { NextFunction, Request, Response } from 'express';
-import { UserService } from '../services/UserService.js';
-import { SessionService } from '../services/SessionService.js';
-import { ApiError } from '../../../shared/Errors/ApiErrors.js';
+import type { NextFunction, Request, Response } from 'express';
+import { SessionService } from '../services/SessionService';
+import { ApiError } from '../../../shared/Errors/ApiErrors';
+import { AuthUserService } from '../services/AuthUserService';
 
 export const AuthController = {
 	async registration(req: Request, res: Response, next: NextFunction) {
@@ -10,8 +9,8 @@ export const AuthController = {
 			const { login, name, password, deviceId } = req.body;
 
 			// 2. Регистрация пользователя
-			const authData = await UserService.registration(login, name, password, deviceId);
-			const { accessToken, refreshToken, user } = authData;
+			const authData = await AuthUserService.registration(login, name, password, deviceId);
+			const { accessToken, refreshToken, user, sessionId } = authData;
 
 			// 3. Собираем данные окружения для сессии
 			const ipAddress = req.ip || (req.headers['x-forwarded-for'] as string) || '127.0.0.1';
@@ -19,7 +18,8 @@ export const AuthController = {
 			const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 дней
 
 			// 4. Создаем сессию в БД через SessionService
-			await SessionService.save({
+			await SessionService.create({
+				id: sessionId,
 				userId: user.id,
 				refreshToken,
 				deviceId,
@@ -51,8 +51,8 @@ export const AuthController = {
 			const { login, password, deviceId } = req.body;
 
 			// 2. Логин пользователя
-			const authData = await UserService.login(login, password, deviceId);
-			const { accessToken, refreshToken, user } = authData;
+			const authData = await AuthUserService.login(login, password, deviceId);
+			const { accessToken, refreshToken, user, sessionId } = authData;
 
 			// 3. Собираем данные окружения для сессии
 			const ipAddress = (req.headers['x-forwarded-for'] as string) || req.ip || '127.0.0.1';
@@ -60,7 +60,8 @@ export const AuthController = {
 			const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 дней
 
 			// 4. Пересоздаем сессию в БД через SessionService
-			await SessionService.save({
+			await SessionService.create({
+				id: sessionId,
 				userId: user.id,
 				refreshToken,
 				deviceId,
@@ -99,7 +100,7 @@ export const AuthController = {
 
 			try {
 				// 2. Удаляем сессию из базы данных
-				await SessionService.remove(refreshToken);
+				await SessionService.removeByRefreshToken(refreshToken);
 			} catch (dbError) {
 				console.log('Ошибка при удалении сессии пользователя!', dbError);
 				// Если токена уже не было в БД (например, удален по истечении срока),
@@ -153,18 +154,18 @@ export const AuthController = {
 			const { refreshToken } = req.cookies;
 
 			// 1. Получаем новые токены и данные из сервиса
-			const userData = await UserService.refresh(refreshToken);
+			const { user, deviceId, sessionId, ...userData } =
+				await AuthUserService.refresh(refreshToken);
 
 			// 2. Сбор данных окружения
 			const ipAddress = req.ip || (req.headers['x-forwarded-for'] as string) || '127.0.0.1';
 			const deviceName = req.headers['user-agent'] || 'Unknown Browser/Device';
 			const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 дней
 
-			// 3. Сохраняем/обновляем сессию на уровне контроллера
-			await SessionService.save({
-				userId: userData.user.id,
+			// 3. Обновляем сессию на уровне контроллера
+			await SessionService.update({
+				id: sessionId,
 				refreshToken: userData.refreshToken,
-				deviceId: userData.deviceId,
 				deviceName,
 				ipAddress,
 				expiresAt,
@@ -181,10 +182,12 @@ export const AuthController = {
 			return res.status(200).json({
 				message: 'Токен был успешно обновлен',
 				accessToken: userData.accessToken,
-				user: userData.user,
+				user,
 			});
 		} catch (e) {
 			next(e);
 		}
 	},
+
+	async forgotPassword(req: Request, res: Response, next: NextFunction) {},
 };

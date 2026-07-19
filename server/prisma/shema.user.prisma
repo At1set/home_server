@@ -13,4 +13,5 @@ model users {
 enum Role {
   user
   admin
+  owner
 }

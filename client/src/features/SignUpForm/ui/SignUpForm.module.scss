@@ -1,0 +1,35 @@
+.field__labelContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  label {
+    margin-bottom: 0;
+  }
+
+  margin-bottom: 5px;
+}
+
+.forgotPasswordLabel {
+  color: inherit;
+  font-size: 12px;
+  opacity: .7;
+}
+
+.extraContainer {
+  text-align: center;
+}
+
+.haveAcc {
+  font-size: 16px;
+  opacity: .6;
+
+  &_link {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    color: inherit;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

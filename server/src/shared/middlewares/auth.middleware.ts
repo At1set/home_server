@@ -1,16 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { UserDTO } from '../../modules/auth/dtos/user.dto';
+import type { Request, Response, NextFunction } from 'express';
 import { ApiError } from '../Errors/ApiErrors';
 import { TokenService } from '../../modules/auth/services/TokenService';
-
-// Расширяем интерфейс Request в Express, чтобы TypeScript знал про req.user
-declare global {
-	namespace Express {
-		interface Request {
-			user?: UserDTO;
-		}
-	}
-}
 
 export function authMiddleware(req: Request, _res: Response, next: NextFunction) {
 	try {
